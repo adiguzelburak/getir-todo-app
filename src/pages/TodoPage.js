@@ -114,7 +114,7 @@ const TodoPage = () => {
                 >
                   {todo.data.isCompleted !== "Completed" ? (
                     <FaCheckCircle
-                      style={{ fontSize: "24px" }}
+                      style={{ fontSize: "24px", cursor: "pointer" }}
                       onClick={() =>
                         dispatch(
                           updateStatusTodoActions(
@@ -126,7 +126,11 @@ const TodoPage = () => {
                     />
                   ) : (
                     <FaTimesCircle
-                      style={{ color: "#ffffff", fontSize: "24px" }}
+                      style={{
+                        color: "#ffffff",
+                        fontSize: "24px",
+                        cursor: "pointer",
+                      }}
                       onClick={() =>
                         dispatch(
                           updateStatusTodoActions(
@@ -166,7 +170,7 @@ const TodoPage = () => {
                     style={{ cursor: "pointer" }}
                     bg="danger"
                   >
-                    <FaTrashAlt style={{ fontSize: "12px" }} />
+                    <FaTrashAlt style={{ fontSize: "14px" }} />
                   </Badge>
                 </Card.Footer>
               </Card>
