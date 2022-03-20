@@ -26,14 +26,23 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import Swal from "sweetalert2";
-
+import lottie from "lottie-web";
+import { useRef } from "react";
 const TodoPage = () => {
   const { todos } = useSelector((state) => state.todosList);
   const dispatch = useDispatch();
+  const animation = useRef(null);
 
   useEffect(() => {
     dispatch(fetchTodosActions());
-  }, []);
+    lottie.loadAnimation({
+      container: animation.current,
+      renderer: "svg",
+      loop: true,
+      autoplay: true,
+      animationData: require("../pages/empty.json"),
+    });
+  }, [todos.length]);
 
   const updateModal = (todoId) => {
     Swal.fire({
@@ -76,81 +85,97 @@ const TodoPage = () => {
 
   return (
     <div className="container">
-      <Row xs={1} md={2} className="g-6">
-        {todos.map((todo) => (
-          <Col key={todo.id}>
-            <Card
-              className="card"
-              style={{
-                height: "auto",
-                margin: "5px 5px",
-                backgroundColor:
-                  todo.data.isCompleted === "Completed" ? "#74c69d" : "#FFC107",
-                color:
-                  todo.data.isCompleted === "Completed" ? "#2d6a4f" : "#ffffff",
-                borderRadius: "10px",
-              }}
-            >
-              <Card.Body
+      {todos.length !== 0 ? (
+        <Row xs={1} md={2} className="g-6">
+          {todos.map((todo) => (
+            <Col key={todo.id}>
+              <Card
+                className="card"
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  height: "auto",
+                  margin: "5px 5px",
+                  backgroundColor:
+                    todo.data.isCompleted === "Completed"
+                      ? "#74c69d"
+                      : "#FFC107",
+                  color:
+                    todo.data.isCompleted === "Completed"
+                      ? "#2d6a4f"
+                      : "#ffffff",
+                  borderRadius: "10px",
                 }}
               >
-                {todo.data.isCompleted !== "Completed" ? (
-                  <FaCheckCircle
-                    style={{ fontSize: "24px" }}
-                    onClick={() =>
-                      dispatch(
-                        updateStatusTodoActions(todo.id, todo.data.isCompleted)
-                      )
-                    }
-                  />
-                ) : (
-                  <FaTimesCircle
-                    style={{ color: "#ffffff", fontSize: "24px" }}
-                    onClick={() =>
-                      dispatch(
-                        updateStatusTodoActions(todo.id, todo.data.isCompleted)
-                      )
-                    }
-                  />
-                )}
-                <Card.Text style={{ width: "70%" }}>{todo.data.name}</Card.Text>
-                <Badge
-                  onClick={() => updateModal(todo.id)}
+                <Card.Body
                   style={{
-                    cursor: "pointer",
-                    height: "24px",
-                    borderRadius: "5px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
-                  bg="success"
                 >
-                  <FaPen />
-                </Badge>
-              </Card.Body>
+                  {todo.data.isCompleted !== "Completed" ? (
+                    <FaCheckCircle
+                      style={{ fontSize: "24px" }}
+                      onClick={() =>
+                        dispatch(
+                          updateStatusTodoActions(
+                            todo.id,
+                            todo.data.isCompleted
+                          )
+                        )
+                      }
+                    />
+                  ) : (
+                    <FaTimesCircle
+                      style={{ color: "#ffffff", fontSize: "24px" }}
+                      onClick={() =>
+                        dispatch(
+                          updateStatusTodoActions(
+                            todo.id,
+                            todo.data.isCompleted
+                          )
+                        )
+                      }
+                    />
+                  )}
+                  <Card.Text style={{ width: "70%" }}>
+                    {todo.data.name}
+                  </Card.Text>
+                  <Badge
+                    onClick={() => updateModal(todo.id)}
+                    style={{
+                      cursor: "pointer",
+                      height: "24px",
+                      borderRadius: "5px",
+                    }}
+                    bg="success"
+                  >
+                    <FaPen />
+                  </Badge>
+                </Card.Body>
 
-              <Card.Footer
-                style={{
-                  fontSize: "12px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
-              >
-                <div className="asd"> Creator: {todo.data.userName}</div>
-                <Badge
-                  onClick={() => dispatch(deleteTodoActions(todo.id))}
-                  style={{ cursor: "pointer" }}
-                  bg="danger"
+                <Card.Footer
+                  style={{
+                    fontSize: "12px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
                 >
-                  <FaTrashAlt style={{ fontSize: "12px" }} />
-                </Badge>
-              </Card.Footer>
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                  <div className="asd"> Creator: {todo.data.userName}</div>
+                  <Badge
+                    onClick={() => dispatch(deleteTodoActions(todo.id))}
+                    style={{ cursor: "pointer" }}
+                    bg="danger"
+                  >
+                    <FaTrashAlt style={{ fontSize: "12px" }} />
+                  </Badge>
+                </Card.Footer>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <div className="container" ref={animation}></div>
+      )}
       <button className="add-todo-button" onClick={addTodoModal}>
         <FaPlus />
       </button>
