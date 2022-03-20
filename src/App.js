@@ -4,7 +4,7 @@ import TodoPage from "./pages/TodoPage";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <TodoPage />
     </div>
   );
