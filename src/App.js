@@ -1,12 +1,15 @@
-import logo from "./logo.svg";
 import "./App.css";
+import store from "../src/redux";
 import TodoPage from "./pages/TodoPage";
+import { Provider } from "react-redux";
 
 function App() {
   return (
-    <div>
-      <TodoPage />
-    </div>
+    <Provider store={store}>
+      <div>
+        <TodoPage />
+      </div>
+    </Provider>
   );
 }
 
