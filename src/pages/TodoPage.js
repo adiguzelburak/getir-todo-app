@@ -35,13 +35,18 @@ const TodoPage = () => {
 
   useEffect(() => {
     dispatch(fetchTodosActions());
-    lottie.loadAnimation({
-      container: animation.current,
-      renderer: "svg",
-      loop: true,
-      autoplay: true,
-      animationData: require("../pages/empty.json"),
-    });
+  }, []);
+
+  useEffect(() => {
+    if (todos.length === 0) {
+      lottie.loadAnimation({
+        container: animation.current,
+        renderer: "svg",
+        loop: true,
+        autoplay: true,
+        animationData: require("../pages/empty.json"),
+      });
+    }
   }, [todos.length]);
 
   const updateModal = (todoId) => {
